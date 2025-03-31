@@ -62,8 +62,6 @@ public class AlumnoSimpleServiceImpl implements AlumnoSimpleService {
 
         alumnoExistente = alumnoRepository.save(alumnoExistente);
         return alumnoSimpleMapper.toAlumnoSimpleResponseDTO(alumnoExistente);
-
-
     }
 
     @Override
