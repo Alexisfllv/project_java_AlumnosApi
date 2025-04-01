@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: deadmau5
+      MYSQL_DATABASE: AlumnoApi
+    ports:
+      - "3307:3307"
+    command: --port=3307
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  alumnos-api:
+    build: .
+    container_name: alumnos-api
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      SPRING_APPLICATION_NAME: ${SPRING_APPLICATION_NAME}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
+      SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
+      SPRING_THYMELEAF_ENCODING: ${SPRING_THYMELEAF_ENCODING}
+      SPRINGDOC_API_DOCS_PATH: ${SPRINGDOC_API_DOCS_PATH}
+      SPRINGDOC_SWAGGER_UI_PATH: ${SPRINGDOC_SWAGGER_UI_PATH}
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+
+volumes:
+  mysql_data:
